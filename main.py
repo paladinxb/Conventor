@@ -6,6 +6,7 @@ from PIL import Image
 from flet import ElevatedButton, Row
 from gtts import gTTS
 from pdf2docx import parse
+from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
 def main(page: ft.Page):
@@ -33,7 +34,7 @@ def main(page: ft.Page):
             else:
                 selected_files.update()
     
-    def text_to_speech(file_path, language='en', output_file='output.mp3'):
+    def text_to_speech(file_path, language='ru', output_file='output.mp3'):
         try:
             # Открываем текстовый файл и читаем его содержимое
             with open(file_path, 'r', encoding='utf-8') as file:
@@ -122,23 +123,45 @@ def main(page: ft.Page):
     def open_url(url):
         page.launch_url("https://github.com/paladinxb")
 
-    
-    
+    def bs_dismissed(e):
+        print("Dismissed!")
+
+    def show_bs(e):
+        bs.open = True
+        bs.update()
+
+    def close_bs(e):
+        bs.open = False
+        bs.update()
+
+    bs = ft.BottomSheet(
+        ft.Container(
+            ft.Row(
+                [
+                    #ft.ElevatedButton("Close", on_click=close_bs),
+                    ft.OutlinedButton("GitHub",on_click=open_url),
+                    ft.IconButton(ft.icons.SUNNY, on_click=change),
+                ],
+                tight=True,
+            ),
+            padding=10,
+        ),
+        open=False,
+        on_dismiss=bs_dismissed,
+    )
+
+    # Создание выпадающего меню для выбора темы
     pick_files_dialog = ft.FilePicker(on_result=pick_files_result)
     page.overlay.append(pick_files_dialog)
     selected_files = ft.Text()
-    watermark_path = ft.FilePicker(on_result=pick_files_result)
-    page.overlay.append(watermark_path)
 
+
+    page.overlay.append(bs)
     page.title = "Conventor by paladinxb"
     page.add(
                 ft.Row(
                 [
-                    
-                    #ft.Text("GitHub автора", size = 10),
-                    #ft.IconButton(ft.icons.INFO, on_click = open_url),
-                    ft.IconButton(ft.icons.SUNNY, on_click=change),
-                    ft.OutlinedButton("GitHub",on_click=open_url),
+                    ft.IconButton(ft.icons.SETTINGS, on_click=show_bs),
                 ]
                 ), 
                 ft.Row(
@@ -193,15 +216,12 @@ def main(page: ft.Page):
                         ElevatedButton(text="Сжатие PDF", icon=ft.icons.UPLOAD_FILE,on_click=lambda _: compress_pdf(selected_file, output_file)(
                                     allow_multiple=True
                                 )),
-                        ElevatedButton(text="TXT в Аудио", icon=ft.icons.UPLOAD_FILE,on_click=lambda _: text_to_speech(selected_file, language='en', output_file='output.mp3')(
+                        ElevatedButton(text="TXT в Аудио", icon=ft.icons.UPLOAD_FILE,on_click=lambda _: text_to_speech(selected_file, language='ru', output_file='output.mp3')(
                                     allow_multiple=True
                                 )),
                     ],
                     alignment=ft.MainAxisAlignment.CENTER
                 ), 
-                
-            
-            
         ),
 
 ft.app(target=main)
