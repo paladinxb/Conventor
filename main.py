@@ -1,3 +1,6 @@
+# *Author - Ilya Kharkovets*
+# 20.02.2024
+
 import flet as ft
 import os
 import pathlib
