@@ -136,17 +136,28 @@ def main(page: ft.Page):
     def close_bs(e):
         bs.open = False
         bs.update()
-
+    url = "D:\Coding\Conventor\Freedom - AShamaluevMusic.mp3"
+    audio1 = ft.Audio(
+        src=url,
+        autoplay=True,
+        volume=0.07,
+        balance=0,
+    )
     bs = ft.BottomSheet(
         ft.Container(
             ft.Row(
                 [
                     #ft.ElevatedButton("Close", on_click=close_bs),
-                    ft.OutlinedButton("GitHub",on_click=open_url),
                     ft.IconButton(ft.icons.SUNNY, on_click=change),
+                    #ft.Text("Bg music: ", size=10),
+                    ft.ElevatedButton("Play", on_click=lambda _: audio1.play()),
+                    ft.ElevatedButton("Pause", on_click=lambda _: audio1.pause()),
+                    ft.ElevatedButton("Resume", on_click=lambda _: audio1.resume()),
+                    ft.OutlinedButton("GitHub",on_click=open_url),
                 ],
                 tight=True,
             ),
+            
             padding=10,
         ),
         open=False,
@@ -158,7 +169,7 @@ def main(page: ft.Page):
     page.overlay.append(pick_files_dialog)
     selected_files = ft.Text()
 
-
+    page.overlay.append(audio1)
     page.overlay.append(bs)
     page.title = "Conventor by paladinxb"
     page.add(
@@ -225,6 +236,9 @@ def main(page: ft.Page):
                     ],
                     alignment=ft.MainAxisAlignment.CENTER
                 ), 
+                
+            
+            
         ),
 
 ft.app(target=main)
