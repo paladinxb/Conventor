@@ -1,16 +1,12 @@
 import flet as ft
-from gtts import gTTS
-import PyPDF2
-import pathlib
 import os
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
+import pathlib
+import PyPDF2
 from PIL import Image
+from flet import ElevatedButton, Row
+from gtts import gTTS
 from pdf2docx import parse
-from PIL import Image
-from flet import (
-    ElevatedButton,
-    Row,)
+from reportlab.pdfgen import canvas
 
 def main(page: ft.Page):
     page.window_height = 600
